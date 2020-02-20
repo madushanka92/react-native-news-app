@@ -5,6 +5,7 @@ import { Image, View, Text, StyleSheet } from 'react-native';
 import TopNews from "../view/topNews/topnews";
 import CustomNews from "../view/custom/custom";
 import User from "../view/user/user";
+import Article from "../view/article/article";
 
 const MainNavigation = createBottomTabNavigator(
     {
@@ -61,7 +62,7 @@ const LaunchNavigate = createStackNavigator(
             }
         },
         NewsArticle: {
-            screen: "NewsArticle",
+            screen: Article,
             navigationOptions: {
                 header: null,
                 headerBackTitle: "Back"

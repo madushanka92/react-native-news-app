@@ -53,7 +53,7 @@ export default class TopNews extends Component {
                             {
                                 this.state.articles.map((data , index) => {
                                     return (
-                                        <NewsArticle key={index}  articleDetails={data} />
+                                        <NewsArticle key={index}  articleDetails={data} navigationData={this.props.navigation}/>
                                     )
                                 })
                             }
