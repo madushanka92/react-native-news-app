@@ -1,4 +1,6 @@
 {
   "name": "newsApp",
-  "displayName": "newsApp"
+  "displayName": "newsApp",
+  "newsAPIKEY" : "fd60f9a5c1a644e287e48009522293c9",
+  "API_URL" : "http://newsapi.org/v2/"
 }
