@@ -6,6 +6,7 @@ import TopNews from "../view/topNews/topnews";
 import CustomNews from "../view/custom/custom";
 import User from "../view/user/user";
 import Article from "../view/article/article";
+import UserRegister from "../view/user/register";
 
 const MainNavigation = createBottomTabNavigator(
     {
@@ -35,10 +36,6 @@ const MainNavigation = createBottomTabNavigator(
             gesturesEnabled: false,
         },
         tabBarOptions: {
-            // showIcon: true,
-            // showLabel: true,
-            // activeTintColor: '#F8F8F8',
-            // inactiveTintColor: '#e8eaef',
             style: {
                 marginBottom: 10,
                 height: 30,
@@ -63,6 +60,13 @@ const LaunchNavigate = createStackNavigator(
         },
         NewsArticle: {
             screen: Article,
+            navigationOptions: {
+                header: null,
+                headerBackTitle: "Back"
+            }
+        },
+        UserRegistration: {
+            screen: UserRegister,
             navigationOptions: {
                 header: null,
                 headerBackTitle: "Back"

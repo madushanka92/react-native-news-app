@@ -10,6 +10,7 @@
     "native-base": "^2.10.0",
     "react": "16.6.3",
     "react-native": "0.58.3",
+    "react-native-dropdownalert": "^3.9.1",
     "react-native-gesture-handler": "^1.0.12",
     "react-native-loading-spinner-overlay": "^1.0.1",
     "react-native-vector-icons": "^6.6.0",

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, RefreshControl } from 'react-native';
+import { View, ScrollView, RefreshControl , AsyncStorage } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 // import { Container, Header, Left, Body, Right, Button, Icon, Title, Segment, Content, Text } from 'native-base';
 import { Container, Header, Content, Picker, Form, Text } from "native-base";
@@ -28,15 +28,22 @@ export default class CustomNews extends Component {
             selected: value
         });
 
+
         await this.setState({ 'spinner': true });
         await this.setState({ "articles": [] });
         await this.getNews();
     }
 
 
-    componentDidMount = () => {
+    componentDidMount =  async () => {
         this.setState({ 'spinner': true });
         this.getNews();
+
+
+        await AsyncStorage.multiSet([
+            ['userDetails', null],  
+        ],
+            (err) => { console.log(err) });
     }
 
     _onRefresh = () => {
