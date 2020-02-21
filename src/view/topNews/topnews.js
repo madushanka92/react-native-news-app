@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, RefreshControl, StyleSheet } from 'react-native';
 import { Header, Body } from 'native-base';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import { Services } from '../../services/services';
 import NewsArticle from '../../components/news-article/article';
+import HeadTitle from '../../components/header-title/headerTitle';
 
 export default class TopNews extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            articleData: false,
             articles: [],
             spinner: false,
             refreshing: false,
@@ -29,15 +29,10 @@ export default class TopNews extends Component {
     getNews = () => {
         this.setServices.getService("top-headlines?country=us", "")
             .then((responseData) => {
-                console.log("responseData :", responseData);
                 this.setState({ "articles": responseData.articles });
-                this.setState({ "articleData": true });
-                console.log("responseData :", this.state.articleData);
                 this.setState({ 'spinner': false });
                 this.setState({ 'refreshing': false });
             }, (error) => {
-
-                console.log("error Data :", error);
                 this.setState({ 'spinner': false });
                 this.setState({ 'refreshing': false });
             })
@@ -53,17 +48,8 @@ export default class TopNews extends Component {
         return (
             <View style={{ flex: 1 }} >
                 <Header elevation={3} iosStatusbar="light-content"
-                    androidStatusBarColor='#000' transparent>
-                    <View style={{ flexDirection: 'row', height: 50, paddingHorizontal: 10, paddingTop: 5 }}>
-                        <View style={{ justifyContent: 'center', }}>
-                            <Text style={{
-                                color: '#142828',
-                                fontWeight: '400', fontSize: 20,
-                                alignItems: 'center',
-                                alignSelf: 'center', justifyContent: 'center',
-                            }}>Top News</Text>
-                        </View>
-                    </View>
+                    androidStatusBarColor='#000' transparent>                                      
+                    <HeadTitle title={'Top News'}/>
                 </Header>
 
                 <Spinner
@@ -72,7 +58,7 @@ export default class TopNews extends Component {
                     textStyle={{ color: '#FFF' }}
                 />
 
-                <View style={{ marginLeft: 15, marginRight: 15, flex: 1 }}>
+                <View style={topNewsStyle.ContentView}>
                     <ScrollView style={{ paddingTop: 10, }} refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
@@ -93,3 +79,7 @@ export default class TopNews extends Component {
 
     };
 }
+
+const topNewsStyle = StyleSheet.create({
+    ContentView: { marginLeft: 15, marginRight: 15, flex: 1 }
+})

@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, Dimensions, Image, Linking } from 'react-native';
+import { View, Text, ScrollView, Dimensions, Image, Linking, StyleSheet } from 'react-native';
 import { Header, Left, Button, Icon, Body, Right } from 'native-base';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-import { Services } from '../../services/services';
-import NewsArticle from '../../components/news-article/article';
 
 export default class Article extends Component {
 
@@ -18,7 +14,6 @@ export default class Article extends Component {
 
     componentWillMount() {
         this.setState({ articleData: this.props.navigation.getParam('articleData') });
-        console.log("Article Details : ", this.props.navigation.getParam('articleData'));
     }
 
     loadInBrowser = () => {
@@ -27,17 +22,13 @@ export default class Article extends Component {
 
     render() {
 
-        const win = Dimensions.get('window');
         return (
             <View style={{ flex: 1 }} >
                 <Header elevation={1} transparent>
                     <Left>
-                        <Button style={{ height: 15 }} hasText transparent onPress={() => { this.props.navigation.goBack() }}>
-                            <Icon name='arrow-back' style={{ fontSize: 30, color: 'black' }} />
-                            {/* <FontAwesome name='arrow-left' size={15} color='#000'></FontAwesome> */}
-                            {/* <Text style={{ height: 15 ,backgroundColor: 'blue' , fontSize: 13, color: 'black' }}>  Back</Text> */}
+                        <Button style={articleStyle.BackBtn} hasText transparent onPress={() => { this.props.navigation.goBack() }}>
+                            <Icon name='arrow-back' style={articleStyle.BackIcon} />
                         </Button>
-
                     </Left>
                     <Body>
                     </Body>
@@ -45,9 +36,9 @@ export default class Article extends Component {
                     </Right>
                 </Header>
 
-                <ScrollView style={{ margin: 10, height: win.height }}>
+                <ScrollView style={articleStyle.ScrollView}>
                     <View >
-                        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
+                        <Text style={articleStyle.TitleText}>
                             {this.state.articleData.title}
                         </Text>
                     </View>
@@ -57,15 +48,14 @@ export default class Article extends Component {
                     </View>
 
 
-                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
+                    <View style={articleStyle.ImageView}>
                         <Image resizeMode='contain' style={{ width: win.width, height: 150 }} source={{ uri: "" + this.state.articleData.urlToImage + "" }}></Image>
                     </View>
 
                     <View style={{ marginTop: 20 }}>
                         <Text> {this.state.articleData.content}</Text>
                     </View>
-                    <View style={{ marginTop: 15 , paddingBottom : 10 }}>
-                        {/* <Button hasText style={{ height: 50 }} title="Open in Browser" onPress={this.loadInBrowser} /> */}
+                    <View style={articleStyle.ReadMoreBtnView}>
                         <Button block info onPress={this.loadInBrowser}><Text> Read More . . . </Text></Button>
                     </View>
                 </ScrollView>
@@ -74,3 +64,14 @@ export default class Article extends Component {
 
     };
 }
+
+const win = Dimensions.get('window');
+const articleStyle = StyleSheet.create({
+    BackBtn: { height: 15 },
+    BackIcon: { fontSize: 30, color: 'black' },
+    ScrollView: { margin: 10, height: win.height },
+    TitleText: { fontSize: 22, fontWeight: 'bold' },
+    ImageView: { justifyContent: 'center', alignItems: 'center', marginTop: 20 },
+    ReadMoreBtnView: { marginTop: 15, paddingBottom: 10 }
+
+})

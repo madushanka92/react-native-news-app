@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { View, ScrollView, RefreshControl, AsyncStorage, TextInput } from 'react-native';
+import { View, AsyncStorage, TextInput, StyleSheet } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DropdownAlert from 'react-native-dropdownalert';
-// import { Container, Header, Left, Body, Right, Button, Icon, Title, Segment, Content, Text } from 'native-base';
-import { Container, Header, Content, Picker, Button, Text, Left, Icon, Body, Right } from "native-base";
-import NewsArticle from '../../components/news-article/article';
-import { Services } from '../../services/services';
+import { Header, Button, Text, Left, Icon, Body } from "native-base";
+import HeadTitle from '../../components/header-title/headerTitle';
 
 
 export default class UserRegister extends Component {
@@ -22,9 +20,7 @@ export default class UserRegister extends Component {
         }
     }
     componentDidMount = async () => {
-        // this.setState({ 'spinner': true });
-        await AsyncStorage.multiGet(['userDetails','firstName','lastName','email','userName','password' ]).then(response => {
-            console.log("Response : ", response);
+        await AsyncStorage.multiGet(['userDetails', 'firstName', 'lastName', 'email', 'userName', 'password']).then(response => {
             this.setState({ 'user': response[0][1] });
         })
     }
@@ -57,7 +53,7 @@ export default class UserRegister extends Component {
                 ['lastName', this.state.lastName],
                 ['email', this.state.email],
                 ['userName', this.state.userName],
-                ['password', this.state.password], 
+                ['password', this.state.password],
             ],
                 (err) => { console.log(err) });
 
@@ -66,9 +62,6 @@ export default class UserRegister extends Component {
         }
     }
 
-
-
-
     render() {
         return (
             <View style={{ flex: 1 }} >
@@ -76,22 +69,13 @@ export default class UserRegister extends Component {
                 <Header elevation={3} iosStatusbar="light-content" hasSegment
                     androidStatusBarColor='#000' transparent>
                     <Left>
-                        <Button style={{ height: 15 }} hasText transparent onPress={() => { this.props.navigation.goBack() }}>
-                            <Icon name='arrow-back' style={{ fontSize: 30, color: 'black' }} />
+                        <Button style={registerStyle.BackBtn} hasText transparent onPress={() => { this.props.navigation.goBack() }}>
+                            <Icon name='arrow-back' style={registerStyle.BackBtnIcon} />
                         </Button>
 
                     </Left>
                     <Body>
-                        <View style={{ flexDirection: 'row', height: 50, paddingHorizontal: 10, paddingTop: 5 }}>
-                            <View style={{ justifyContent: 'center', }}>
-                                <Text style={{
-                                    color: '#142828',
-                                    fontWeight: '400', fontSize: 20,
-                                    alignItems: 'center',
-                                    alignSelf: 'center', justifyContent: 'center',
-                                }}>User Registration</Text>
-                            </View>
-                        </View>
+                        <HeadTitle title={'User Registration'} />
                     </Body>
                 </Header>
 
@@ -104,60 +88,60 @@ export default class UserRegister extends Component {
 
                 <View style={{ marginLeft: 15, marginRight: 15, marginTop: 20, flex: 1 }}>
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={registerStyle.TextFieldView}>
                         <Text style={{ width: 100 }}>First Name : </Text>
                         <View style={{ flex: 1 }}>
                             <TextInput
-                                style={{ height: 40, width: '90%', borderColor: 'gray', borderBottomWidth: 1 }}
+                                style={registerStyle.TextInput}
                                 onChangeText={(text) => this.setState({ "firstName": text })}
                                 value={this.state.text}
                             /></View>
                     </View>
 
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={registerStyle.TextFieldView}>
                         <Text style={{ width: 100 }}>Last Name : </Text>
                         <View style={{ flex: 1 }}>
                             <TextInput
-                                style={{ height: 40, width: '90%', borderColor: 'gray', borderBottomWidth: 1 }}
+                                style={registerStyle.TextInput}
                                 onChangeText={(text) => this.setState({ "lastName": text })}
                                 value={this.state.text}
                             /></View>
                     </View>
 
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={registerStyle.TextFieldView}>
                         <Text style={{ width: 100 }}>Email : </Text>
                         <View style={{ flex: 1 }}>
                             <TextInput
-                                style={{ height: 40, width: '90%', borderColor: 'gray', borderBottomWidth: 1 }}
+                                style={registerStyle.TextInput}
                                 onChangeText={(text) => this.setState({ "email": text })}
                                 value={this.state.text}
                             /></View>
                     </View>
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={registerStyle.TextFieldView}>
                         <Text style={{ width: 100 }}>User Name : </Text>
                         <View style={{ flex: 1 }}>
                             <TextInput
-                                style={{ height: 40, width: '90%', borderColor: 'gray', borderBottomWidth: 1 }}
+                                style={registerStyle.TextInput}
                                 onChangeText={(text) => this.setState({ "userName": text })}
                                 value={this.state.text}
                             /></View>
                     </View>
 
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={registerStyle.TextFieldView}>
                         <Text style={{ width: 100 }}>Password : </Text>
                         <View style={{ flex: 1 }}>
                             <TextInput secureTextEntry={true}
-                                style={{ height: 40, width: '90%', borderColor: 'gray', borderBottomWidth: 1 }}
+                                style={registerStyle.TextInput}
                                 onChangeText={(text) => this.setState({ "password": text })}
                                 value={this.state.text}
                             /></View>
                     </View>
                     <View style={{ marginTop: 10 }}>
-                        <Text style={{ color: 'red', fontSize: 12 }}>* All the fields are required</Text>
+                        <Text style={registerStyle.requireText}>* All the fields are required</Text>
                     </View>
 
                     <View style={{ marginTop: 25 }}>
@@ -171,3 +155,11 @@ export default class UserRegister extends Component {
 
     };
 }
+
+const registerStyle = StyleSheet.create({
+    BackBtn: { height: 15 },
+    BackBtnIcon: { fontSize: 30, color: 'black' },
+    TextFieldView: { flexDirection: 'row', alignItems: 'center' },
+    TextInput: { height: 40, width: '90%', borderColor: 'gray', borderBottomWidth: 1 },
+    requireText: { color: 'red', fontSize: 12 }
+})

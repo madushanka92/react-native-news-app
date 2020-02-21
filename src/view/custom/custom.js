@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, ScrollView, RefreshControl , AsyncStorage } from 'react-native';
+import { View, ScrollView, RefreshControl, AsyncStorage, StyleSheet } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 // import { Container, Header, Left, Body, Right, Button, Icon, Title, Segment, Content, Text } from 'native-base';
 import { Container, Header, Content, Picker, Form, Text } from "native-base";
 import NewsArticle from '../../components/news-article/article';
 import { Services } from '../../services/services';
+import HeadTitle from '../../components/header-title/headerTitle';
 
 
 export default class CustomNews extends Component {
@@ -35,13 +36,13 @@ export default class CustomNews extends Component {
     }
 
 
-    componentDidMount =  async () => {
+    componentDidMount = async () => {
         this.setState({ 'spinner': true });
         this.getNews();
 
 
         await AsyncStorage.multiSet([
-            ['userDetails', null],  
+            ['userDetails', null],
         ],
             (err) => { console.log(err) });
     }
@@ -70,25 +71,14 @@ export default class CustomNews extends Component {
             <View style={{ flex: 1 }} >
                 <Header elevation={3} iosStatusbar="light-content" hasSegment
                     androidStatusBarColor='#000' transparent>
-                    <View style={{ flexDirection: 'row', height: 50, paddingHorizontal: 10, paddingTop: 5 }}>
-                        <View style={{ justifyContent: 'center', }}>
-                            <Text style={{
-                                color: '#142828',
-                                fontWeight: '400', fontSize: 20,
-                                alignItems: 'center',
-                                alignSelf: 'center', justifyContent: 'center',
-                            }}>News</Text>
-                        </View>
-                    </View>
+                    <HeadTitle title={'News'} />
                 </Header>
 
-                <Spinner
-                    visible={this.state.spinner}
+                <Spinner visible={this.state.spinner}
                     textContent={'Loading...'}
-                    textStyle={{ color: '#FFF' }}
-                />
+                    textStyle={{ color: '#FFF' }} />
 
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
+                <View style={customNewsStyle.CategoryView}>
                     <View>
                         <Text>Category : </Text>
                     </View>
@@ -112,7 +102,7 @@ export default class CustomNews extends Component {
                 </View>
 
                 <View style={{ marginLeft: 15, marginRight: 15, flex: 1 }}>
-                    <ScrollView style={{ paddingTop: 10, }} refreshControl={
+                    <ScrollView style={customNewsStyle.ScrollView} refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={this._onRefresh}
@@ -132,3 +122,8 @@ export default class CustomNews extends Component {
 
     };
 }
+
+const customNewsStyle = StyleSheet.create({
+    CategoryView: { flexDirection: 'row', alignItems: 'center', marginLeft: 10 },
+    ScrollView: { paddingTop: 10, }
+});

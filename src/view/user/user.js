@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { View, ScrollView, RefreshControl, AsyncStorage } from 'react-native';
+import { View, AsyncStorage, StyleSheet } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
-// import { Container, Header, Left, Body, Right, Button, Icon, Title, Segment, Content, Text } from 'native-base';
 import { Card, Header, Content, CardItem, Button, Text, Body } from "native-base";
-import NewsArticle from '../../components/news-article/article';
-import { Services } from '../../services/services';
-
+import HeadTitle from '../../components/header-title/headerTitle';
 
 export default class User extends Component {
 
@@ -20,15 +17,12 @@ export default class User extends Component {
 
     }
 
-
-
     componentWillMount = () => {
         this.getUser();
     }
 
     async getUser() {
         await AsyncStorage.multiGet(['userDetails', 'firstName', 'lastName', 'email', 'userName', 'password']).then(response => {
-            console.log("Response : ", response);
             this.setState({ 'user': response[0][1] });
             let userDetails = {
                 firstName: response[1][1],
@@ -44,7 +38,6 @@ export default class User extends Component {
 
     async removeUser() {
 
-        console.log("remove user");
         this.setState({ 'user': null });
         await AsyncStorage.multiSet([
             ['userDetails', ''],
@@ -57,24 +50,12 @@ export default class User extends Component {
             (err) => { console.log(err) });
     }
 
-
-
-
     render() {
         return (
             <View style={{ flex: 1 }} >
                 <Header elevation={3} iosStatusbar="light-content" hasSegment
                     androidStatusBarColor='#000' transparent>
-                    <View style={{ flexDirection: 'row', height: 50, paddingHorizontal: 10, paddingTop: 5 }}>
-                        <View style={{ justifyContent: 'center', }}>
-                            <Text style={{
-                                color: '#142828',
-                                fontWeight: '400', fontSize: 20,
-                                alignItems: 'center',
-                                alignSelf: 'center', justifyContent: 'center',
-                            }}>User</Text>
-                        </View>
-                    </View>
+                    <HeadTitle title={'User'} />
                 </Header>
 
                 <Spinner
@@ -87,8 +68,7 @@ export default class User extends Component {
                 <View style={{ marginLeft: 15, marginRight: 15, flex: 1 }}>
                     {
                         this.state.user == null || this.state.user == '' ?
-                            <View style={{ flex: 1, alignItems: 'center', alignSelf: 'center', justifyContent: 'center' }}>
-                                {/* <Button style={{ marginBottom: 15 }} block info onPress={this.loadInBrowser}><Text> Sign In </Text></Button> */}
+                            <View style={userStyle.BtnView}>
                                 <Button block info onPress={() => {
                                     this.props.navigation.navigate('UserRegistration', {
                                         callBack: this.getUser.bind(this)
@@ -124,3 +104,8 @@ export default class User extends Component {
 
     };
 }
+
+const userStyle = StyleSheet.create({
+    BtnView: { flex: 1, alignItems: 'center', alignSelf: 'center', justifyContent: 'center' },
+
+})
