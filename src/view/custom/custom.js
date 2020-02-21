@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, RefreshControl } from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
 // import { Container, Header, Left, Body, Right, Button, Icon, Title, Segment, Content, Text } from 'native-base';
 import { Container, Header, Content, Picker, Form, Text } from "native-base";
 import NewsArticle from '../../components/news-article/article';
@@ -13,7 +14,9 @@ export default class CustomNews extends Component {
         this.state = {
             activePage: 1,
             selected: "bitcoin",
-            articles: []
+            articles: [],
+            spinner: false,
+            refreshing: false,
         }
 
 
@@ -25,22 +28,34 @@ export default class CustomNews extends Component {
             selected: value
         });
 
+        await this.setState({ 'spinner': true });
         await this.setState({ "articles": [] });
         await this.getNews();
     }
 
 
     componentDidMount = () => {
+        this.setState({ 'spinner': true });
         this.getNews();
     }
 
-    getNews = () => { 
+    _onRefresh = () => {
+        this.setState({ "articles": [] });
+        this.setState({ 'refreshing': true });
+        this.getNews();
+    }
+
+    getNews = () => {
         this.setServices.getService("everything?q=" + this.state.selected, "")
-        .then((responseData) => { 
-            this.setState({ "articles": responseData.articles }); 
-        }, (error) => {
-            console.log("error Data :", error);
-        })
+            .then((responseData) => {
+                this.setState({ "articles": responseData.articles });
+                this.setState({ 'spinner': false });
+                this.setState({ 'refreshing': false });
+            }, (error) => {
+                console.log("error Data :", error);
+                this.setState({ 'spinner': false });
+                this.setState({ 'refreshing': false });
+            })
     }
 
     render() {
@@ -59,6 +74,13 @@ export default class CustomNews extends Component {
                         </View>
                     </View>
                 </Header>
+
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Loading...'}
+                    textStyle={{ color: '#FFF' }}
+                />
+
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
                     <View>
                         <Text>Category : </Text>
@@ -83,7 +105,12 @@ export default class CustomNews extends Component {
                 </View>
 
                 <View style={{ marginLeft: 15, marginRight: 15, flex: 1 }}>
-                    <ScrollView style={{ paddingTop: 10,}}>
+                    <ScrollView style={{ paddingTop: 10, }} refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh}
+                        />}
+                    >
                         {
                             this.state.articles.map((data, index) => {
                                 return (
