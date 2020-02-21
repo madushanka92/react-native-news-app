@@ -20,7 +20,7 @@ export default class TopNews extends Component {
     componentDidMount = () => {
         this.setServices.getService("top-headlines?country=us", "")
             .then((responseData) => {
-                console.log("responseData :", responseData); 
+                console.log("responseData :", responseData);
                 this.setState({ "articles": responseData.articles });
                 this.setState({ "articleData": true });
                 console.log("responseData :", this.state.articleData);
@@ -32,7 +32,7 @@ export default class TopNews extends Component {
 
     render() {
         return (
-            <View>
+            <View style={{ flex: 1 }} >
                 <Header elevation={3} iosStatusbar="light-content"
                     androidStatusBarColor='#000' transparent>
                     <View style={{ flexDirection: 'row', height: 50, paddingHorizontal: 10, paddingTop: 5 }}>
@@ -45,21 +45,18 @@ export default class TopNews extends Component {
                             }}>Top News</Text>
                         </View>
                     </View>
-                </Header> 
-
-                {
-                    this.state.articleData == true ? <View style={{ marginLeft: 15, marginRight: 15 }}>
-                        <ScrollView style={{  paddingTop: 10, marginBottom: 80, }}>
-                            {
-                                this.state.articles.map((data , index) => {
-                                    return (
-                                        <NewsArticle key={index}  articleDetails={data} navigationData={this.props.navigation}/>
-                                    )
-                                })
-                            }
-                        </ScrollView>
-                    </View> : null
-                }
+                </Header>
+                <View style={{ marginLeft: 15, marginRight: 15, flex: 1 }}>
+                    <ScrollView style={{ paddingTop: 10, }}>
+                        {
+                            this.state.articles.map((data, index) => {
+                                return (
+                                    <NewsArticle key={index} articleDetails={data} navigationData={this.props.navigation} />
+                                )
+                            })
+                        }
+                    </ScrollView>
+                </View>
             </View>
         )
 
